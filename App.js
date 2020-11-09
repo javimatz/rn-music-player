@@ -1,21 +1,32 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Text } from 'react-native';
+import { Provider } from 'react-redux';
+// import { store, persistor } from './src/store';
+import { PersistGate } from 'redux-persist/integration/react';
+// import RootNavigator from './src/navigation';
+// import SplashScreen from './src/screens/SplashScreen';
 
 export default function App() {
+  const [timePassed, setTimePassed] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => setTimePassed(true), 600);
+    store.dispatch({ type: 'set_playback', payload: false }); // To make sure currentTrack is paused at startup
+    if (Text.defaultProps == null) Text.defaultProps = {};
+    Text.defaultProps.allowFontScaling = false;
+    // console.disableYellowBox = true;
+  }, []);
+
+  function renderApp(isReady) {
+    if (isReady && timePassed) {
+      return <RootNavigator />;
+    }
+    return <SplashScreen />;
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>{renderApp}</PersistGate>
+    </Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
