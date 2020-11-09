@@ -1,0 +1,12 @@
+{
+  "name": "rn-music-player",
+  "displayName": "rn-music-player",
+  "expo": {
+    "name": "rn-music-player",
+    "slug": "rn-music-player",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
